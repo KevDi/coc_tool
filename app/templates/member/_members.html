@@ -1,0 +1,28 @@
+{% if current_user.is_authenticated %}
+<h2>Sackratten Mitglieder:</h2>
+
+<table id="member_table" class="table table-striped">
+    <thead class="thead-dark">
+        <tr>
+            <th>Name</th>
+            <th>Town Hall Level</th>
+            <th>King Level</th>
+            <th>Queen Level</th>
+            <th>Warden Level</th>
+            <th>Royal Champion Level</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for member in members %}
+        <tr>
+            <td>{{member.name}}</td>
+            <td>{{member.th_level}}</td>
+            <td>{{member.king_level}}</td>
+            <td>{{member.queen_level}}</td>
+            <td>{{member.warden_level}}</td>
+            <td>{{member.royal_level}}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endif %}

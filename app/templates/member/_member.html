@@ -1,0 +1,15 @@
+<div class="col-xs-12 col-sm-4 col-lg-3 mr-2 mb-2">
+    <div class="card w-90">
+        <div class=" card-body">
+            <h5 class="card-title">
+                <a href="{{ url_for('member.member', membername=member.name)}}">
+                    {{member.name}}
+                </a></h5>
+            <span class="badge badge-primary">TH: {{member.th_level}}</span>
+            <span class="badge badge-secondary">King: {{member.king_level}}</span>
+            <span class="badge badge-dark">Queen: {{member.queen_level}}</span>
+            <span class="badge badge-light">Warden: {{member.warden_level}}</span>
+            <span class="badge badge-danger">Royal: {{member.royal_level}}</span>
+        </div>
+    </div>
+</div>
