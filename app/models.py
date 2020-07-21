@@ -77,5 +77,5 @@ class Member(db.Model):
         self.th_level = other.th_level
         self.king_level = other.king_level
         self.queen_level = other.queen_level
-        self.warden_level = other.queen_level
+        self.warden_level = other.warden_level
         self.royal_level = other.royal_level
