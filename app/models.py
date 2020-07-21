@@ -33,7 +33,15 @@ class Member(db.Model):
     royal_level = db.Column(db.Integer)
 
     def __repr__(self):
-        return "<Member {}:{}>".format(self.id, self.name)
+        return "<Member {}:{}:TH:{}:KL:{}:QL:{}:WL:{}:RL:{}>".format(
+            self.id,
+            self.name,
+            self.th_level,
+            self.king_level,
+            self.queen_level,
+            self.warden_level,
+            self.royal_level,
+        )
 
     def read_from_json(self, data):
         setattr(self, "id", data["tag"])

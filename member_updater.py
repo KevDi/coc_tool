@@ -72,6 +72,7 @@ class Member_Updater:
                 continue
             new_member_data = self.create_member(response.json())
             if new_member_data != member:
+                self.app.logger.info("New Member Data {}".format(new_member_data))
                 self.app.logger.info("Updated Member {}".format(member))
                 member.update(new_member_data)
 
