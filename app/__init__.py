@@ -28,15 +28,15 @@ def create_app(config_class=Config):
 
     from app.errors import bp as errors_bp
 
-    app.register_blueprint(errors_bp)
+    app.register_blueprint(errors_bp, url_prefix="/coc")
 
     from app.auth import bp as auth_bp
 
-    app.register_blueprint(auth_bp, url_prefix="/auth")
+    app.register_blueprint(auth_bp, url_prefix="/coc/auth")
 
     from app.member import bp as member_bp
 
-    app.register_blueprint(member_bp)
+    app.register_blueprint(member_bp, url_prefix="/coc")
 
     if not app.debug:
         if app.config["MAIL_SERVER"]:
