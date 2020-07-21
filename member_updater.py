@@ -1,11 +1,14 @@
 from app.models import Member
 from app import db
+from app import create_app
 import requests
 import urllib.parse
 
 
 class Member_Updater:
     def __init__(self, apikey, clan_tag) -> None:
+        app = create_app()
+        app.app_context().push()
         self.apikey = apikey
         self.clan_tag = self.encode_tag(clan_tag)
         self.members = Member.query.all()
