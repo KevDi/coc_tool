@@ -17,4 +17,10 @@ class Config(object):
     MAIL_USERNAME = os.environ.get("MAIL_USERNAME")
     MAIL_PASSWORD = os.environ.get("MAIL_PASSWORD")
     ADMINS = ["kevin@mjkd.de"]
-    MEMBERS_PER_PAGE = 5
+
+
+class COC_Config(Config):
+    API_KEY = os.environ.get("COC_API_KEY")
+    CLAN_TAG = os.environ.get("COC_CLAN_TAG") or "#8889L922"
+    BASE_URL = os.environ.get("COC_BASE_URL") or "https://api.clashofclans.com/v1"
+

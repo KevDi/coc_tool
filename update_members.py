@@ -1,4 +1,5 @@
 from member_updater import Member_Updater
+from config import COC_Config
 import os
 
 API_KEY = os.environ.get("COC_API_KEY")
@@ -7,5 +8,6 @@ BASE_URL = "https://api.clashofclans.com/v1"
 
 
 if __name__ == "__main__":
-    updater = Member_Updater(API_KEY, CLAN_TAG)
+    config = COC_Config()
+    updater = Member_Updater(config)
     updater.update()

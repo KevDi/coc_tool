@@ -6,13 +6,13 @@ import urllib.parse
 
 
 class Member_Updater:
-    def __init__(self, apikey, clan_tag) -> None:
-        app = create_app()
-        app.app_context().push()
-        self.apikey = apikey
-        self.clan_tag = self.encode_tag(clan_tag)
+    def __init__(self, config) -> None:
+        self.app = create_app()
+        self.app.app_context().push()
+        self.apikey = config.API_KEY
+        self.clan_tag = self.encode_tag(config.CLAN_TAG)
         self.members = Member.query.all()
-        self.baseurl = "https://api.clashofclans.com/v1"
+        self.baseurl = config.BASE_URL
         self.clan_uri = "clans/{}/members".format(self.clan_tag)
 
     def encode_tag(self, tag):
@@ -20,6 +20,7 @@ class Member_Updater:
 
     def send_request(self, url):
         url = "{}/{}".format(self.baseurl, url)
+        self.app.logger.info("Send Request to URL {}".format(url))
         response = requests.get(
             url,
             headers={
@@ -56,7 +57,7 @@ class Member_Updater:
                 continue
             member = self.create_member(response.json())
             if member:
-                print("Add new Member {}".format(member))
+                self.app.logger.info("Add new Member {}".format(member))
                 db.session.add(member)
 
     def create_member(self, data):
@@ -71,7 +72,7 @@ class Member_Updater:
                 continue
             new_member_data = self.create_member(response.json())
             if new_member_data != member:
-                print("Update Member {}".format(member))
+                self.app.logger.info("Updated Member {}".format(member))
                 member.update(new_member_data)
 
     def update(self):
