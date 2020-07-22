@@ -23,6 +23,13 @@ class User(UserMixin, db.Model):
         return check_password_hash(self.password_hash, password)
 
 
+members_in_war = db.Table(
+    "member_in_war",
+    db.Column("member_id", db.String(12), db.ForeignKey("member.id")),
+    db.Column("war_id", db.Integer, db.ForeignKey("war.id")),
+)
+
+
 class Member(db.Model):
     id = db.Column(db.String(12), primary_key=True)
     name = db.Column(db.String(64), index=True, unique=True)
@@ -79,3 +86,16 @@ class Member(db.Model):
         self.queen_level = other.queen_level
         self.warden_level = other.warden_level
         self.royal_level = other.royal_level
+
+
+class War(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    enemy = db.Column(db.String(64))
+    start_time = db.Column(db.DateTime, index=True)
+    end_time = db.Column(db.DateTime, index=True)
+    victory = db.Column(db.Boolean, index=True)
+    members = db.relationship("Member", secondary=members_in_war, backref="wars")
+
+    def __repr__(self):
+        return "<War against {} Victory: {}>".format(self.enemy, self.victory)
+
