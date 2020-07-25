@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row row-cols-3">
+    {% for war in wars %}
+    <div class="col">
+        {% if war.victory == None %}
+        <div class="card bg-light mb-3" style="max-width: 18rem;">
+            {% elif war.victory == True %}
+            <div class="card text-white bg-success mb-3" style="max-width: 18rem;">
+                {% else %}
+                <div class="card text-white bg-danger mb-3" style="max-width: 18rem;">
+                    {% endif %}
+                    <div class="card-header">10.10.2020 - 11.10.2020</div>
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            {%if war.victory == None %}
+                            <a href="#" class="text-dark">
+                                {% else %}
+                                <a href="#" class="text-light">
+
+                                    {% endif %}
+                                    War against {{war.enemy}}
+                                </a>
+                        </h5>
+                        Test
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endblock %}

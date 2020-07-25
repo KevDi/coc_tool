@@ -23,12 +23,20 @@
     <div class="container">
         <nav class="navbar navbar-dark navbar-expand-lg bg-dark mb-2">
             <a class="navbar-brand" href="{{url_for('member.index')}}">COC Analyse Tool</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02"
-                aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarMenu"
+                aria-controls="navbarMenu" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
-            <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+            <div class="collapse navbar-collapse" id="navbarMenu">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="{{url_for('member.index')}}">Home</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="{{url_for('wars.wars')}}">Wars</a>
+                    </li>
+                </ul>
                 <ul class="navbar-nav my-2 my-lg-0">
                     {% if current_user.is_authenticated %}
                     <li class="nav-item active">
