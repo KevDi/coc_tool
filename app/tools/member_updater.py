@@ -1,20 +1,14 @@
 from app.models import Member
+from app.tools.updater import Updater
 from app import db
 import requests
-import urllib.parse
 
 
-class Member_Updater:
+class Member_Updater(Updater):
     def __init__(self, config, app) -> None:
-        self.app = app
-        self.apikey = config.API_KEY
-        self.clan_tag = self.encode_tag(config.CLAN_TAG)
+        super().__init__(config, app)
         self.members = Member.query.all()
-        self.baseurl = config.BASE_URL
         self.clan_uri = "clans/{}/members".format(self.clan_tag)
-
-    def encode_tag(self, tag):
-        return urllib.parse.quote(tag)
 
     def send_request(self, url):
         url = "{}/{}".format(self.baseurl, url)
