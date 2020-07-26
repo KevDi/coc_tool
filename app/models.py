@@ -38,6 +38,7 @@ class Member(db.Model):
     queen_level = db.Column(db.Integer)
     warden_level = db.Column(db.Integer)
     royal_level = db.Column(db.Integer)
+    battles = db.relationship("Battle", backref="member")
 
     def __repr__(self):
         return "<Member {}:{}:TH:{}:KL:{}:QL:{}:WL:{}:RL:{}>".format(
@@ -94,8 +95,35 @@ class War(db.Model):
     start_time = db.Column(db.DateTime, index=True)
     end_time = db.Column(db.DateTime, index=True)
     victory = db.Column(db.Boolean, index=True)
+    enemy_clan_level = db.Column(db.Integer)
     members = db.relationship("Member", secondary=members_in_war, backref="wars")
+    battles = db.relationship("Battle", backref="war")
 
     def __repr__(self):
         return "<War against {} Victory: {}>".format(self.enemy, self.victory)
 
+    def read_from_json(self, data):
+        
+
+class Mode(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    mode = db.Column(db.String(10))
+    battle = db.relationship("Battle", backref="mode", uselist=False)
+
+    def __repr__(self):
+        return "<Mode: {}>".format(self.mode)
+
+
+class Battle(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    enemy_tag = db.Column(db.String(12), nullable=False)
+    enemy_th_level = db.Column(db.Integer, nullable=False)
+    member_id = db.Column(db.String(12), db.ForeignKey("member.id"), nullable=False)
+    member_th_level = db.Column(db.Integer, nullable=False)
+    mode_id = db.Column(db.Integer, db.ForeignKey("mode.id"), nullable=False)
+    stars = db.Column(db.Integer, nullable=False)
+    percentage = db.Column(db.Float, nullable=False)
+    war_id = db.Column(db.Integer, db.ForeignKey("war.id"), nullable=False)
+
+    def __repr__(self):
+        return "<Battle: {} vs {}>".format(self.member, self.enemyTag)
