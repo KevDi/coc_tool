@@ -1,0 +1,177 @@
+{
+    "state": "preparation",
+    "teamSize": 10,
+    "preparationStartTime": "20200724T194122.000Z",
+    "startTime": "20200725T184122.000Z",
+    "endTime": "20200726T184122.000Z",
+    "clan": {
+        "tag": "#8889L922",
+        "name": "Sackratten",
+        "badgeUrls": {
+            "small": "https://api-assets.clashofclans.com/badges/70/Lsn_hrbbHQ-NaBdNXy-rjCzuaNj42XhpnuZllWDy3-I.png",
+            "large": "https://api-assets.clashofclans.com/badges/512/Lsn_hrbbHQ-NaBdNXy-rjCzuaNj42XhpnuZllWDy3-I.png",
+            "medium": "https://api-assets.clashofclans.com/badges/200/Lsn_hrbbHQ-NaBdNXy-rjCzuaNj42XhpnuZllWDy3-I.png"
+        },
+        "clanLevel": 17,
+        "attacks": 14,
+        "stars": 21,
+        "destructionPercentage": 80.40,
+        "members": [
+            {
+                "tag": "#L9UJ29P",
+                "name": "cendrimkameraj",
+                "townhallLevel": 12,
+                "mapPosition": 8,
+                "opponentAttacks": 0
+            },
+            {
+                "tag": "#VRPYGVVR",
+                "name": "phil",
+                "townhallLevel": 12,
+                "mapPosition": 5,
+                "opponentAttacks": 0
+            },
+            {
+                "tag": "#22GQLUGPC",
+                "name": "Suzu",
+                "townhallLevel": 13,
+                "mapPosition": 1,
+                "opponentAttacks": 0
+            },
+            {
+                "tag": "#P9PRC0LY",
+                "name": "Boreon",
+                "townhallLevel": 13,
+                "mapPosition": 3,
+                "opponentAttacks": 0
+            },
+            {
+                "tag": "#QYYRYL9V",
+                "name": "Evil",
+                "townhallLevel": 13,
+                "mapPosition": 2,
+                "opponentAttacks": 0
+            },
+            {
+                "tag": "#2CLC0RR92",
+                "name": "-.-K_A_K_U-.-",
+                "townhallLevel": 10,
+                "mapPosition": 10,
+                "opponentAttacks": 0
+            },
+            {
+                "tag": "#RYRUPY8",
+                "name": "Robin",
+                "townhallLevel": 11,
+                "mapPosition": 9,
+                "opponentAttacks": 0
+            },
+            {
+                "tag": "#92JVL0C2",
+                "name": "Paul",
+                "townhallLevel": 12,
+                "mapPosition": 4,
+                "opponentAttacks": 0
+            },
+            {
+                "tag": "#80QGP08VU",
+                "name": "adi",
+                "townhallLevel": 13,
+                "mapPosition": 6,
+                "opponentAttacks": 0
+            },
+            {
+                "tag": "#8LUUV8VY",
+                "name": "RASOLI",
+                "townhallLevel": 12,
+                "mapPosition": 7,
+                "opponentAttacks": 0
+            }
+        ]
+    },
+    "opponent": {
+        "tag": "#QQLPU200",
+        "name": "Les Cousiins",
+        "badgeUrls": {
+            "small": "https://api-assets.clashofclans.com/badges/70/ikCTlYHNLqyskc-ZRMoWUya_aCpufVE2NwsbjNcG7yw.png",
+            "large": "https://api-assets.clashofclans.com/badges/512/ikCTlYHNLqyskc-ZRMoWUya_aCpufVE2NwsbjNcG7yw.png",
+            "medium": "https://api-assets.clashofclans.com/badges/200/ikCTlYHNLqyskc-ZRMoWUya_aCpufVE2NwsbjNcG7yw.png"
+        },
+        "clanLevel": 17,
+        "attacks": 17,
+        "stars": 25,
+        "destructionPercentage": 88.20,
+        "members": [
+            {
+                "tag": "#20YCV0PY8",
+                "name": "OpTiMuS PrimE",
+                "townhallLevel": 12,
+                "mapPosition": 5,
+                "opponentAttacks": 0
+            },
+            {
+                "tag": "#2JUR8GYGJ",
+                "name": "Antoine",
+                "townhallLevel": 12,
+                "mapPosition": 9,
+                "opponentAttacks": 0
+            },
+            {
+                "tag": "#VQ2PQGJY",
+                "name": "laroto",
+                "townhallLevel": 13,
+                "mapPosition": 2,
+                "opponentAttacks": 0
+            },
+            {
+                "tag": "#2JYQ2RUR",
+                "name": "gandalf",
+                "townhallLevel": 13,
+                "mapPosition": 1,
+                "opponentAttacks": 0
+            },
+            {
+                "tag": "#9Y9QLCJJ",
+                "name": "fivles",
+                "townhallLevel": 12,
+                "mapPosition": 4,
+                "opponentAttacks": 0
+            },
+            {
+                "tag": "#LJLC8G8L",
+                "name": "jeremy",
+                "townhallLevel": 12,
+                "mapPosition": 6,
+                "opponentAttacks": 0
+            },
+            {
+                "tag": "#PPCUCGYCP",
+                "name": "Antoine2",
+                "townhallLevel": 11,
+                "mapPosition": 10,
+                "opponentAttacks": 0
+            },
+            {
+                "tag": "#YP9JVLPRY",
+                "name": "la gaulle",
+                "townhallLevel": 12,
+                "mapPosition": 8,
+                "opponentAttacks": 0
+            },
+            {
+                "tag": "#2999G2P29",
+                "name": "toma",
+                "townhallLevel": 12,
+                "mapPosition": 7,
+                "opponentAttacks": 0
+            },
+            {
+                "tag": "#800CYG80V",
+                "name": "step62",
+                "townhallLevel": 13,
+                "mapPosition": 3,
+                "opponentAttacks": 0
+            }
+        ]
+    }
+}

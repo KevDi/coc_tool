@@ -1,34 +1,13 @@
 from app.models import Member
+from app.tools.updater import Updater
 from app import db
-from app import create_app
-import requests
-import urllib.parse
 
 
-class Member_Updater:
-    def __init__(self, config) -> None:
-        self.app = create_app()
-        self.app.app_context().push()
-        self.apikey = config.API_KEY
-        self.clan_tag = self.encode_tag(config.CLAN_TAG)
+class Member_Updater(Updater):
+    def __init__(self, config, app) -> None:
+        super().__init__(config, app)
         self.members = Member.query.all()
-        self.baseurl = config.BASE_URL
         self.clan_uri = "clans/{}/members".format(self.clan_tag)
-
-    def encode_tag(self, tag):
-        return urllib.parse.quote(tag)
-
-    def send_request(self, url):
-        url = "{}/{}".format(self.baseurl, url)
-        self.app.logger.info("Send Request to URL {}".format(url))
-        response = requests.get(
-            url,
-            headers={
-                "Accept": "application/json",
-                "Authorization": "Bearer {}".format(self.apikey),
-            },
-        )
-        return response
 
     def get_member_tags(self, data):
         return [member["tag"] for member in data["items"]]
@@ -79,8 +58,8 @@ class Member_Updater:
     def update(self):
         response = self.send_request(self.clan_uri)
         if response.status_code != 200:
-            print("error")
-            print(response.json())
+            self.app.logger.info("Error {}".format(response.status_code))
+            self.app.logger.info("Message {}".format(response.json()))
             return
         member_tags = self.get_member_tags(response.json())
         self.delete_left_members(member_tags)

@@ -1,5 +1,6 @@
 from operator import sub
 from flask import Flask
+from werkzeug.urls import url_parse
 from config import Config
 import os
 import logging
@@ -22,6 +23,7 @@ def create_app(config_class=Config):
     app.config.from_object(config_class)
 
     db.init_app(app)
+
     migrate.init_app(app, db)
     login.init_app(app)
     bootstrap.init_app(app)
@@ -37,6 +39,10 @@ def create_app(config_class=Config):
     from app.member import bp as member_bp
 
     app.register_blueprint(member_bp, url_prefix="/coc")
+
+    from app.wars import bp as wars_bp
+
+    app.register_blueprint(wars_bp, url_prefix="/coc/wars")
 
     if not app.debug:
         if app.config["MAIL_SERVER"]:

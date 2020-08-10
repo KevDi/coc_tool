@@ -15,7 +15,7 @@
     <tbody>
         {% for member in members %}
         <tr>
-            <td>{{member.name}}</td>
+            <td><a href="{{ url_for('member.member', membername=member.name) }}">{{member.name}}</a></td>
             <td>{{member.th_level}}</td>
             <td>{{member.king_level}}</td>
             <td>{{member.queen_level}}</td>
