@@ -30,7 +30,9 @@ class War_Updater(Updater):
         end_time = datetime.strptime(data["endTime"], self.date_format)
         clan_data = self.get_clan_data(data)
         opponent_data = self.get_opponent_data(data)
-        victory = self.is_victory(clan_data, opponent_data)
+        victory = (
+            self.is_victory(clan_data, opponent_data) if self.war_ended(data) else None
+        )
         war = War(
             enemy=opponent_data["tag"],
             start_time=start_time,
@@ -177,6 +179,11 @@ class War_Updater(Updater):
         end_time = datetime.strptime(data["endTime"], self.date_format)
         return War.query.filter_by(start_time=start_time, end_time=end_time).first()
 
+    def update_victory(self, war, data):
+        clan_data = self.get_clan_data(data)
+        opponent_data = self.get_opponent_data(data)
+        war.victory = self.is_victory(clan_data, opponent_data)
+
     def update(self):
         response = self.send_request(self.war_uri)
         if response.status_code != 200:
@@ -191,4 +198,7 @@ class War_Updater(Updater):
             self.store_war_battles(war, data)
         elif (self.war_running or self.war_ended) and self.war_in_db(data):
             war = self.load_war(data)
+            if self.war_ended(data):
+                self.update_victory(war, data)
+                db.session.commit()
             self.store_war_battles(war, data)
