@@ -1,7 +1,6 @@
 from app.models import Member
 from app.tools.updater import Updater
 from app import db
-import requests
 
 
 class Member_Updater(Updater):
@@ -9,18 +8,6 @@ class Member_Updater(Updater):
         super().__init__(config, app)
         self.members = Member.query.all()
         self.clan_uri = "clans/{}/members".format(self.clan_tag)
-
-    def send_request(self, url):
-        url = "{}/{}".format(self.baseurl, url)
-        self.app.logger.info("Send Request to URL {}".format(url))
-        response = requests.get(
-            url,
-            headers={
-                "Accept": "application/json",
-                "Authorization": "Bearer {}".format(self.apikey),
-            },
-        )
-        return response
 
     def get_member_tags(self, data):
         return [member["tag"] for member in data["items"]]

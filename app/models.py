@@ -104,57 +104,11 @@ class War(db.Model):
     def __repr__(self):
         return "<War against {} Victory: {}>".format(self.enemy, self.victory)
 
-    def read_from_json(self, data, clan_tag):
-        date_format = "%Y%m%dT%H%M%S.%fZ"
-        self.start_time = datetime.strptime(data["startTime"], date_format)
-        self.end_time = datetime.strptime(data["endTime"], date_format)
-
-        clan_data = (
-            data["clan"] if data["clan"]["tag"] == clan_tag else data["opponent"]
-        )
-        opponent_data = (
-            data["opponent"] if data["opponent"]["tag"] != clan_tag else data["clan"]
-        )
-
-        self.enemy = opponent_data["tag"]
-        self.enemy_clan_level = opponent_data["clanLevel"]
-
-        self.victory = self.is_victory(clan_data, opponent_data)
-
-        self.load_members(clan_data)
-        self.load_members_battles(clan_data, opponent_data)
-
-    def is_victory(self, clan_data, opponent_data):
-        clan_stars = clan_data["stars"]
-        opponent_stars = opponent_data["stars"]
-        if clan_stars > opponent_stars:
-            return True
-        elif clan_stars < opponent_stars:
-            return False
-        else:
-            clan_percentage = clan_data["destructionPercentage"]
-            opponent_percentage = opponent_data["destructionPercentage"]
-            return clan_percentage > opponent_percentage
-
-    def load_members(self, clan_data, opponent_data):
-        for member in clan_data["members"]:
-            current_member = Member.query.filter_by(id=member["tag"]).first()
-            if current_member:
-                self.members.append(current_member)
-                self.load_member_attacks(
-                    current_member, member, opponent_data
-                )
-
-    def load_member_attacks(self, member, member_data, opponent_data):
-        th_level = member_data["townhallLevel"]
-        for attack in member_data["attacks"]:
-            defender_tag = attack["defenderTag"]
-            opponent = [opponent for opponent in opponent_data["members"] if opponent["tag"] == defender_tag]
 
 class Mode(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     mode = db.Column(db.String(10))
-    battle = db.relationship("Battle", backref="mode", uselist=False)
+    battles = db.relationship("Battle", backref="mode")
 
     def __repr__(self):
         return "<Mode: {}>".format(self.mode)
@@ -172,17 +126,4 @@ class Battle(db.Model):
     war_id = db.Column(db.Integer, db.ForeignKey("war.id"), nullable=False)
 
     def __repr__(self):
-        return "<Battle: {} vs {}>".format(self.member, self.enemyTag)
-
-    def read_from_json(self, th_level, member, opponents_member, attack_data):
-        self.member = member
-        self.member_th_level = th_level
-        self.enemy_th_level = [
-            opponent["townhallLevel"]
-            for opponent in opponents_member
-            if opponent["tag"] == attack_data["defenderTag"]
-        ]
-        self.enemy_tag = attack_data["defenderTag"]
-        self.mode = Mode.query.filter_by(mode="Attack").first()
-        self.stars = attack_data["stars"]
-        self.percentage = attack_data["percentage"]
+        return "<Battle: {} vs {}>".format(self.member, self.enemy_tag)

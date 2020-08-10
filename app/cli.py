@@ -1,11 +1,8 @@
-from json import load
-import os
-import click
 from app.tools.member_updater import Member_Updater
+from app.tools.war_updater import War_Updater
 from app.models import Mode
 from app import db
 from config import COC_Config
-from app.tools.load_wars_from_file import load_from_file
 
 
 def register(app):
@@ -27,7 +24,9 @@ def register(app):
 
     @war.command()
     def update():
-        load_from_file()
+        config = COC_Config()
+        updater = War_Updater(config, app)
+        updater.update()
 
     @app.cli.group()
     def initdb():
