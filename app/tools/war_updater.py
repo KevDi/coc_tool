@@ -85,7 +85,7 @@ class War_Updater(Updater):
         opponent_data = self.get_opponent_data(data)
         for member in clan_data["members"]:
             current_member = Member.query.filter_by(id=member["tag"]).first()
-            if current_member:
+            if current_member and "attacks" in member:
                 attack_data = member["attacks"]
                 member_th = member["townhallLevel"]
                 self.load_member_attack(
