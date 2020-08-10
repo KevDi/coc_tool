@@ -58,8 +58,8 @@ class Member_Updater(Updater):
     def update(self):
         response = self.send_request(self.clan_uri)
         if response.status_code != 200:
-            print("error")
-            print(response.json())
+            self.app.logger.info("Error {}".format(response.status_code))
+            self.app.logger.info("Message {}".format(response.json()))
             return
         member_tags = self.get_member_tags(response.json())
         self.delete_left_members(member_tags)

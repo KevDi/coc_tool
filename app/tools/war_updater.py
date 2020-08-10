@@ -2,7 +2,6 @@ from app.models import War, Member, Mode, Battle
 from app.tools.updater import Updater
 from app import db
 from datetime import datetime
-import json
 
 
 class War_Updater(Updater):
@@ -179,19 +178,17 @@ class War_Updater(Updater):
         return War.query.filter_by(start_time=start_time, end_time=end_time).first()
 
     def update(self):
-        # response = self.send_request(self.war_uri)
-        # if response.status_code != 200:
-        #     print("error")
-        #     print(response.json())
-        #     return
-        with open("data/20200718184146.json") as json_file:
-            data = json.load(json_file)
-            # data = response.json()
-            if self.war_in_preperation(data) and not self.war_in_db(data):
-                self.store_war(data)
-            elif (self.war_running or self.war_ended) and not self.war_in_db(data):
-                war = self.store_war(data)
-                self.store_war_battles(war, data)
-            elif (self.war_running or self.war_ended) and self.war_in_db(data):
-                war = self.load_war(data)
-                self.store_war_battles(war, data)
+        response = self.send_request(self.war_uri)
+        if response.status_code != 200:
+            self.app.logger.info("Error {}".format(response.status_code))
+            self.app.logger.info("Message {}".format(response.json()))
+            return
+        data = response.json()
+        if self.war_in_preperation(data) and not self.war_in_db(data):
+            self.store_war(data)
+        elif (self.war_running or self.war_ended) and not self.war_in_db(data):
+            war = self.store_war(data)
+            self.store_war_battles(war, data)
+        elif (self.war_running or self.war_ended) and self.war_in_db(data):
+            war = self.load_war(data)
+            self.store_war_battles(war, data)
