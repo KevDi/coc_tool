@@ -162,12 +162,12 @@ class War_Updater(Updater):
                 db.session.add(battle)
 
     def load_or_create_mode(self, mode):
-        mode = Mode.query.filter_by(mode=mode).first()
-        if not mode:
-            mode = Mode(mode=mode)
-            db.session.add(mode)
+        mode_entry = Mode.query.filter_by(mode=mode).first()
+        if not mode_entry:
+            mode_entry = Mode(mode=mode)
+            db.session.add(mode_entry)
             db.session.commit()
-        return mode
+        return mode_entry
 
     def load_battle(self, member, enemy_tag, war, mode):
         return Battle.query.filter_by(
