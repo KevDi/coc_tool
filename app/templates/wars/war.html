@@ -3,28 +3,70 @@
 {% block content %}
 <div class="bg-light">
     <div class="row justify-content-md-center">
-        <h2 class="col col-lg-2" style="margin-bottom: 0;">Sackratten</h2>
-        <h2 class="col col-lg-2" style="margin-bottom: 0;">#12345</h2>
+        <h2 class="col col-lg-4 text-right" style="margin-bottom: 0;">Sackratten</h2>
+        <h2 class="col col-lg-4" style="margin-bottom: 0;">{{ war.enemy }}</h2>
     </div>
     <div class="row justify-content-md-center">
         <div class="col col-lg-2 text-right">
             <h2 style="margin-top:0">
-                <small style="font-size: 60%;">0.00%</small>
+                <small style="font-size: 60%;">{{clan_war_result.percentage}}%</small>
                 <span style=" color:#444">
                     <i class="far fa-star"></i>
-                    0
+                    {{ clan_war_result.stars }}
                 </span>
             </h2>
         </div>
         <div class="col col-lg-2">
             <h2 style="margin-top:0">
                 <span style="color:#444">
-                    0
+                    {{ opponent_war_result.stars}}
                     <i class="far fa-star"></i>
                 </span>
-                <small style="font-size: 60%;">0.00%</small>
+                <small style="font-size: 60%;">{{opponent_war_result.stars}}%</small>
             </h2>
         </div>
     </div>
 </div>
+<br />
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th colspan="5">Clan Angriffe</th>
+        </tr>
+        <tr class="text-center">
+            <th scope="col">Angriffe</th>
+            <th scope="col"><i class="far fa-star"></i></th>
+            <th scope="col"><i class="far fa-star"></i><i class="far fa-star"></i></th>
+            <th scope="col"><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i></th>
+            <th scope="col">Fehlgeschlagene Angriffe</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr class="text-center">
+            <th scope="row">{{clan_war_result.attacks}}/{{war.size * 2}}</th>
+            <td>{{clan_war_result.three_stars}}</td>
+            <td>{{clan_war_result.two_stars}}</td>
+            <td>{{clan_war_result.one_stars}}</td>
+            <td>{{clan_war_result.zero_stars}}</td>
+        </tr>
+        <tr>
+            <th colspan="5">Gegner Angrife</th>
+        </tr>
+        <tr class="text-center">
+            <th scope="col">Angriffe</th>
+            <th scope="col"><i class="far fa-star"></i></th>
+            <th scope="col"><i class="far fa-star"></i><i class="far fa-star"></i></th>
+            <th scope="col"><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i></th>
+            <th scope="col">Fehlgeschlagene Angriffe</th>
+        </tr>
+        <tr class="text-center">
+            <th scope="row">{{opponent_war_result.attacks}}/{{war.size * 2}}</th>
+            <td>{{opponent_war_result.three_stars}}</td>
+            <td>{{opponent_war_result.two_stars}}</td>
+            <td>{{opponent_war_result.one_stars}}</td>
+            <td>{{opponent_war_result.zero_stars}}</td>
+        </tr>
+    </tbody>
+</table>
 {% endblock %}
