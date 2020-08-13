@@ -93,7 +93,9 @@ class Member(db.Model):
 
 class War(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    size = db.Column(db.Integer)
     enemy = db.Column(db.String(64))
+    enemy_tag = db.Column(db.String(12))
     start_time = db.Column(db.DateTime, index=True)
     end_time = db.Column(db.DateTime, index=True)
     victory = db.Column(db.Boolean, index=True)
@@ -117,6 +119,7 @@ class Mode(db.Model):
 class Battle(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     enemy_tag = db.Column(db.String(12), nullable=False)
+    enemy_name = db.Column(db.String(64), nullable=False)
     enemy_th_level = db.Column(db.Integer, nullable=False)
     member_id = db.Column(db.String(12), db.ForeignKey("member.id"), nullable=False)
     member_th_level = db.Column(db.Integer, nullable=False)
