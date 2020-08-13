@@ -34,7 +34,9 @@ class War_Updater(Updater):
             self.is_victory(clan_data, opponent_data) if self.war_ended(data) else None
         )
         war = War(
-            enemy=opponent_data["tag"],
+            size=data["teamSize"],
+            enemy=opponent_data["name"],
+            enemy_tag=opponent_data["tag"],
             start_time=start_time,
             end_time=end_time,
             victory=victory,
@@ -113,6 +115,7 @@ class War_Updater(Updater):
                 for attack in opponent["attacks"]:
                     if attack["defenderTag"] == member.id:
                         attack["th_level"] = opponent["townhallLevel"]
+                        attack["name"] = opponent["name"]
                         defenses.append(attack)
         mode = self.load_or_create_mode("Defense")
         for defense in defenses:
@@ -122,6 +125,7 @@ class War_Updater(Updater):
             if not battle:
                 battle = Battle(
                     enemy_tag=defense["attackerTag"],
+                    enemy_name=defense["name"],
                     enemy_th_level=defense["th_level"],
                     member=member,
                     member_th_level=member_th_level,
@@ -150,6 +154,7 @@ class War_Updater(Updater):
             if not battle:
                 battle = Battle(
                     enemy_tag=attack["defenderTag"],
+                    enemy_name=opponent["name"],
                     enemy_th_level=opponent["townhallLevel"],
                     member_th_level=member_th_level,
                     stars=attack["stars"],
@@ -162,12 +167,12 @@ class War_Updater(Updater):
                 db.session.add(battle)
 
     def load_or_create_mode(self, mode):
-        mode = Mode.query.filter_by(mode=mode).first()
-        if not mode:
-            mode = Mode(mode=mode)
-            db.session.add(mode)
+        mode_entry = Mode.query.filter_by(mode=mode).first()
+        if not mode_entry:
+            mode_entry = Mode(mode=mode)
+            db.session.add(mode_entry)
             db.session.commit()
-        return mode
+        return mode_entry
 
     def load_battle(self, member, enemy_tag, war, mode):
         return Battle.query.filter_by(
