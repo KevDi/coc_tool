@@ -16,9 +16,9 @@
                     <div class="card-body">
                         <h5 class="card-title">
                             {%if war.victory == None %}
-                            <a href="#" class="text-dark">
+                            <a href="{{ url_for('wars.war', war_id=war.id) }}" class="text-dark">
                                 {% else %}
-                                <a href="#" class="text-light">
+                                <a href="{{ url_for('wars.war', war_id=war.id) }}" class="text-light">
                                     {% endif %}
                                     War against {{war.enemy}}
                                 </a>
