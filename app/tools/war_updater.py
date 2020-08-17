@@ -92,9 +92,11 @@ class War_Updater(Updater):
             if current_member and "attacks" in member:
                 attack_data = member["attacks"]
                 member_th = member["townhallLevel"]
+                position = member["mapPosition"]
                 self.load_member_attack(
                     member=current_member,
                     member_th_level=member_th,
+                    member_position=position,
                     attack_data=attack_data,
                     opponent_data=opponent_data,
                     war=war,
@@ -102,12 +104,15 @@ class War_Updater(Updater):
                 self.load_member_defense(
                     member=current_member,
                     member_th_level=member_th,
+                    member_position=position,
                     opponent_data=opponent_data,
                     war=war,
                 )
         db.session.commit()
 
-    def load_member_defense(self, member, member_th_level, opponent_data, war):
+    def load_member_defense(
+        self, member, member_th_level, member_position, opponent_data, war
+    ):
         self.app.logger.info("Store Defenses for Member {}".format(member.name))
         defenses = []
         for opponent in opponent_data["members"]:
@@ -116,6 +121,7 @@ class War_Updater(Updater):
                     if attack["defenderTag"] == member.id:
                         attack["th_level"] = opponent["townhallLevel"]
                         attack["name"] = opponent["name"]
+                        attack["position"] = opponent["mapPosition"]
                         defenses.append(attack)
         mode = self.load_or_create_mode("Defense")
         for defense in defenses:
@@ -127,8 +133,10 @@ class War_Updater(Updater):
                     enemy_tag=defense["attackerTag"],
                     enemy_name=defense["name"],
                     enemy_th_level=defense["th_level"],
+                    # enemy_position=defense["position"],
                     member=member,
                     member_th_level=member_th_level,
+                    # member_position=member_position,
                     stars=defense["stars"],
                     percentage=defense["destructionPercentage"],
                     war=war,
@@ -138,7 +146,7 @@ class War_Updater(Updater):
                 db.session.add(battle)
 
     def load_member_attack(
-        self, member, member_th_level, attack_data, opponent_data, war
+        self, member, member_th_level, member_position, attack_data, opponent_data, war
     ):
         self.app.logger.info("Load Attacks for Member {}".format(member.name))
         for attack in attack_data:
@@ -156,7 +164,9 @@ class War_Updater(Updater):
                     enemy_tag=attack["defenderTag"],
                     enemy_name=opponent["name"],
                     enemy_th_level=opponent["townhallLevel"],
+                    enemy_position=opponent["mapPosition"],
                     member_th_level=member_th_level,
+                    member_position=member_position,
                     stars=attack["stars"],
                     percentage=attack["destructionPercentage"],
                     mode=mode,
