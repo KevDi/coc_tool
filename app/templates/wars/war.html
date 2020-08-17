@@ -1,13 +1,13 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="bg-light">
+<div class="bg-light war-summery">
     <div class="row justify-content-md-center">
-        <h2 class="col col-lg-4 text-right" style="margin-bottom: 0;">Sackratten</h2>
-        <h2 class="col col-lg-4" style="margin-bottom: 0;">{{ war.enemy }}</h2>
+        <h2 class="col-6 text-right" style="margin-bottom: 0;">Sackratten</h2>
+        <h2 class="col-6" style="margin-bottom: 0;">{{ war.enemy }}</h2>
     </div>
     <div class="row justify-content-md-center">
-        <div class="col col-lg-2 text-right">
+        <div class="col-6 text-right">
             <h2 style="margin-top:0">
                 <small style="font-size: 60%;">{{clan_war_result.percentage}}%</small>
                 <span style=" color:#444">
@@ -16,7 +16,7 @@
                 </span>
             </h2>
         </div>
-        <div class="col col-lg-2">
+        <div class="col-6">
             <h2 style="margin-top:0">
                 <span style="color:#444">
                     {{ opponent_war_result.stars}}
@@ -28,45 +28,106 @@
     </div>
 </div>
 <br />
+<div class="table-responsive war-summery">
+    <table class="table table-bordered table-sm">
+        <thead>
+            <tr>
+                <th colspan="5">Clan Angriffe</th>
+            </tr>
+            <tr class="text-center">
+                <th scope="col">Angriffe</th>
+                <th scope="col"><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i></th>
+                <th scope="col"><i class="far fa-star"></i><i class="far fa-star"></i></th>
+                <th scope="col"><i class="far fa-star"></i></th>
+                <th scope="col">Fehlgeschlagene Angriffe</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="text-center">
+                <td scope="row">{{clan_war_result.attacks}}/{{war.size * 2}}</td>
+                <td>{{clan_war_result.three_stars}}</td>
+                <td>{{clan_war_result.two_stars}}</td>
+                <td>{{clan_war_result.one_stars}}</td>
+                <td>{{clan_war_result.zero_stars}}</td>
+            </tr>
+            <tr>
+                <th colspan="5">Gegner Angrife</th>
+            </tr>
+            <tr class="text-center">
+                <th scope="col" style="vertical-align: bottom">Angriffe</th>
+                <th scope="col" style="vertical-align: bottom"><i class="far fa-star"></i><i class="far fa-star"></i><i
+                        class="far fa-star"></i></th>
+                <th scope="col" style="vertical-align: bottom"><i class="far fa-star"></i><i class="far fa-star"></i>
+                </th>
+                <th scope="col" style="vertical-align: bottom"><i class="far fa-star"></i></th>
+                <th scope="col" style="vertical-align: bottom">Fehlgeschlagene Angriffe</th>
+            </tr>
+            <tr class="text-center">
+                <td scope="row">{{opponent_war_result.attacks}}/{{war.size * 2}}</td>
+                <td>{{opponent_war_result.three_stars}}</td>
+                <td>{{opponent_war_result.two_stars}}</td>
+                <td>{{opponent_war_result.one_stars}}</td>
+                <td>{{opponent_war_result.zero_stars}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<ul class="list-group">
+    <li class="list-group-item">
+        <div class="row">
+            <div class="col-sm-9">
+                <h2>User</h2>
 
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th colspan="5">Clan Angriffe</th>
-        </tr>
-        <tr class="text-center">
-            <th scope="col">Angriffe</th>
-            <th scope="col"><i class="far fa-star"></i></th>
-            <th scope="col"><i class="far fa-star"></i><i class="far fa-star"></i></th>
-            <th scope="col"><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i></th>
-            <th scope="col">Fehlgeschlagene Angriffe</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr class="text-center">
-            <th scope="row">{{clan_war_result.attacks}}/{{war.size * 2}}</th>
-            <td>{{clan_war_result.three_stars}}</td>
-            <td>{{clan_war_result.two_stars}}</td>
-            <td>{{clan_war_result.one_stars}}</td>
-            <td>{{clan_war_result.zero_stars}}</td>
-        </tr>
-        <tr>
-            <th colspan="5">Gegner Angrife</th>
-        </tr>
-        <tr class="text-center">
-            <th scope="col">Angriffe</th>
-            <th scope="col"><i class="far fa-star"></i></th>
-            <th scope="col"><i class="far fa-star"></i><i class="far fa-star"></i></th>
-            <th scope="col"><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i></th>
-            <th scope="col">Fehlgeschlagene Angriffe</th>
-        </tr>
-        <tr class="text-center">
-            <th scope="row">{{opponent_war_result.attacks}}/{{war.size * 2}}</th>
-            <td>{{opponent_war_result.three_stars}}</td>
-            <td>{{opponent_war_result.two_stars}}</td>
-            <td>{{opponent_war_result.one_stars}}</td>
-            <td>{{opponent_war_result.zero_stars}}</td>
-        </tr>
-    </tbody>
-</table>
+                <div class="row">
+
+                    <div class="col-sm-12">
+                        <h4>Angriff</h4>
+                    </div>
+                </div>
+                <div class="row">
+                    {% include 'wars/_battle.html' %}
+                    {% include 'wars/_battle.html' %}
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <h4>Verteidigung</h4>
+                    </div>
+                </div>
+
+                <div class="row">
+                </div>
+
+
+            </div>
+    </li>
+
+    <li class="list-group-item">
+        <div class="row">
+            <div class="col-sm-9">
+                <h2>User</h2>
+
+                <div class="row">
+
+                    <div class="col-sm-12">
+                        <h4>Angriff</h4>
+                    </div>
+                </div>
+                <div class="row">
+                    {% include 'wars/_battle.html' %}
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <h4>Verteidigung</h4>
+                    </div>
+                </div>
+
+                <div class="row">
+                </div>
+
+
+            </div>
+    </li>
+</ul>
 {% endblock %}
