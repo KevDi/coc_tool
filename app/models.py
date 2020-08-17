@@ -98,6 +98,8 @@ class War(db.Model):
     enemy_tag = db.Column(db.String(12))
     start_time = db.Column(db.DateTime, index=True)
     end_time = db.Column(db.DateTime, index=True)
+    clan_stars = db.Column(db.Integer)
+    enemy_stars = db.Column(db.Integer)
     victory = db.Column(db.Boolean, index=True)
     enemy_clan_level = db.Column(db.Integer)
     members = db.relationship("Member", secondary=members_in_war, backref="wars")

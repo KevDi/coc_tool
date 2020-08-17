@@ -35,8 +35,10 @@ class War_Updater(Updater):
         )
         war = War(
             size=data["teamSize"],
+            clan_stars=clan_data["stars"],
             enemy=opponent_data["name"],
             enemy_tag=opponent_data["tag"],
+            enemy_stars=opponent_data["stars"],
             start_time=start_time,
             end_time=end_time,
             victory=victory,
