@@ -17,8 +17,8 @@ def war(war_id):
     war = War.query.filter_by(id=war_id).first_or_404()
     attacks = [battle for battle in war.battles if battle.mode.mode == "Attack"]
     clan_attack_size = len(attacks)
-    clan_stars = sum(attack.stars for attack in attacks)
-    clan_percentage = sum(attack.percentage for attack in attacks) / war.size
+    clan_stars = war.clan_stars
+    clan_percentage = war.clan_percentage
     clan_three_stars = sum(attack.stars == 3 for attack in attacks)
     clan_two_stars = sum(attack.stars == 2 for attack in attacks)
     clan_one_stars = sum(attack.stars == 1 for attack in attacks)
@@ -36,8 +36,8 @@ def war(war_id):
 
     defenses = [battle for battle in war.battles if battle.mode.mode == "Defense"]
     opponent_attack_size = len(defenses)
-    opponent_stars = sum(defense.stars for defense in defenses)
-    opponent_percentage = sum(defense.percentage for defense in defenses) / war.size
+    opponent_stars = war.enemy_stars
+    opponent_percentage = war.enemy_percentage
     opponent_three_stars = sum(defense.stars == 3 for defense in defenses)
     opponent_two_stars = sum(defense.stars == 2 for defense in defenses)
     opponent_one_stars = sum(defense.stars == 1 for defense in defenses)
