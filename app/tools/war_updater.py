@@ -36,9 +36,11 @@ class War_Updater(Updater):
         war = War(
             size=data["teamSize"],
             clan_stars=clan_data["stars"],
+            clan_percentage=clan_data["destructionPercentage"],
             enemy=opponent_data["name"],
             enemy_tag=opponent_data["tag"],
             enemy_stars=opponent_data["stars"],
+            enemy_percentage=opponent_data["destructionPercentage"],
             start_time=start_time,
             end_time=end_time,
             victory=victory,
@@ -135,10 +137,10 @@ class War_Updater(Updater):
                     enemy_tag=defense["attackerTag"],
                     enemy_name=defense["name"],
                     enemy_th_level=defense["th_level"],
-                    # enemy_position=defense["position"],
+                    enemy_position=defense["position"],
                     member=member,
                     member_th_level=member_th_level,
-                    # member_position=member_position,
+                    member_position=member_position,
                     stars=defense["stars"],
                     percentage=defense["destructionPercentage"],
                     war=war,
@@ -201,6 +203,13 @@ class War_Updater(Updater):
         opponent_data = self.get_opponent_data(data)
         war.victory = self.is_victory(clan_data, opponent_data)
 
+    def update_war(self, war, data):
+        clan_data = self.get_clan_data(data)
+        opponent_data = self.get_opponent_data(data)
+        war.clan_percentage = clan_data["destructionPercentage"]
+        war.enemy_percentage = opponent_data["destructionPercentage"]
+        db.session.commit()
+
     def update(self):
         response = self.send_request(self.war_uri)
         if response.status_code != 200:
@@ -215,6 +224,7 @@ class War_Updater(Updater):
             self.store_war_battles(war, data)
         elif (self.war_running or self.war_ended) and self.war_in_db(data):
             war = self.load_war(data)
+            self.update_war(war, data)
             if self.war_ended(data):
                 self.update_victory(war, data)
                 db.session.commit()
