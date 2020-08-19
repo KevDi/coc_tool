@@ -53,9 +53,27 @@ def war(war_id):
         "zero_stars": opponent_zero_stars,
     }
 
+    user_battles = []
+
+    for member in war.members:
+        attacks = [
+            attack
+            for attack in war.battles
+            if attack.mode.mode == "Attack" and attack.member == member
+        ]
+        defense = [
+            defense
+            for defense in war.battles
+            if defense.mode.mode == "Defense" and defense.member == member
+        ]
+        user_battles.append(
+            {"member": member.name, "attacks": attacks, "defenses": defense}
+        )
+
     return render_template(
         "wars/war.html",
         war=war,
         clan_war_result=clan_war_result,
         opponent_war_result=opponent_war_result,
+        user_battles=user_battles,
     )

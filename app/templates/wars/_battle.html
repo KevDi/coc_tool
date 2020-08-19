@@ -2,34 +2,37 @@
     <div class="card bg-light">
         <div class="card-header">
             <h5 class="card-title">
-                <table class="table table-sm table-bordered">
+                <table class="table table-sm">
                     <tbody>
                         <tr>
-                            <td>User</td>
+                            <td>{{ battle.member.name}}</td>
                             <td>vs</td>
-                            <td>Enemy</td>
+                            <td>{{ battle.enemy_name}}</td>
                         </tr>
                         <tr>
                             <td><span class="badge badge-secondary"
                                     style="font-size: 10px; vertical-align: middle;">Pos:
-                                    4</span>
+                                    {{ battle.member_position }}</span>
                                 <span class="badge badge-primary" style="font-size: 10px; vertical-align: middle;">TH:
-                                    12</span></td>
+                                    {{ battle.member_th_level}}</span></td>
                             <td></td>
                             <td><span class="badge badge-secondary"
-                                    style="font-size: 10px; vertical-align: middle;">Pos: 4</span>
+                                    style="font-size: 10px; vertical-align: middle;">Pos:
+                                    {{ battle.enemy_position }}</span>
                                 <span class="badge badge-primary" style="font-size: 10px; vertical-align: middle;">TH:
-                                    12</span></td>
+                                    {{ battle.enemy_th_level }}</span></td>
                         </tr>
                     </tbody>
                 </table>
-
-
-
-
             </h5>
-            <h6 class="card-subtitle mb-2 text-muted"><i class="far fa-star"></i><i class="fas fa-star"></i><i
-                    class="fas fa-star"></i> 60%</h6>
+            <h6 class="card-subtitle mb-2 text-muted">
+                {% for i in range(battle.stars) %}
+                <i class="far fa-star"></i>
+                {% endfor %}
+                {% for i in range(3-battle.stars) %}
+                <i class="fas fa-star"></i>
+                {% endfor %}
+                {{ battle.percentage}}</h6>
         </div>
     </div>
 </div>

@@ -22,7 +22,7 @@
                     {{ opponent_war_result.stars}}
                     <i class="far fa-star"></i>
                 </span>
-                <small style="font-size: 60%;">{{opponent_war_result.stars}}%</small>
+                <small style="font-size: 60%;">{{opponent_war_result.percentage}}%</small>
             </h2>
         </div>
     </div>
@@ -73,11 +73,13 @@
     </table>
 </div>
 <ul class="list-group">
+    {% for user in user_battles %}
+    {% if user.attacks or user.defenses %}
     <li class="list-group-item">
         <div class="row">
             <div class="col-sm-9">
-                <h2>User</h2>
-
+                <h2>{{ user.member }}</h2>
+                {% if user.attacks %}
                 <div class="row">
 
                     <div class="col-sm-12">
@@ -85,10 +87,13 @@
                     </div>
                 </div>
                 <div class="row">
+                    {% for battle in user.attacks %}
                     {% include 'wars/_battle.html' %}
-                    {% include 'wars/_battle.html' %}
+                    {% endfor %}
                 </div>
+                {% endif %}
 
+                {% if user.defenses %}
                 <div class="row">
                     <div class="col-sm-12">
                         <h4>Verteidigung</h4>
@@ -96,38 +101,15 @@
                 </div>
 
                 <div class="row">
-                </div>
-
-
-            </div>
-    </li>
-
-    <li class="list-group-item">
-        <div class="row">
-            <div class="col-sm-9">
-                <h2>User</h2>
-
-                <div class="row">
-
-                    <div class="col-sm-12">
-                        <h4>Angriff</h4>
-                    </div>
-                </div>
-                <div class="row">
+                    {% for battle in user.defenses %}
                     {% include 'wars/_battle.html' %}
+                    {% endfor %}
                 </div>
-
-                <div class="row">
-                    <div class="col-sm-12">
-                        <h4>Verteidigung</h4>
-                    </div>
-                </div>
-
-                <div class="row">
-                </div>
-
+                {% endif %}
 
             </div>
     </li>
+    {% endif %}
+    {% endfor %}
 </ul>
 {% endblock %}
