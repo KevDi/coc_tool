@@ -93,18 +93,19 @@ class War_Updater(Updater):
         opponent_data = self.get_opponent_data(data)
         for member in clan_data["members"]:
             current_member = Member.query.filter_by(id=member["tag"]).first()
-            if current_member and "attacks" in member:
-                attack_data = member["attacks"]
+            if current_member:
                 member_th = member["townhallLevel"]
                 position = member["mapPosition"]
-                self.load_member_attack(
-                    member=current_member,
-                    member_th_level=member_th,
-                    member_position=position,
-                    attack_data=attack_data,
-                    opponent_data=opponent_data,
-                    war=war,
-                )
+                if "attacks" in member:
+                    attack_data = member["attacks"]
+                    self.load_member_attack(
+                        member=current_member,
+                        member_th_level=member_th,
+                        member_position=position,
+                        attack_data=attack_data,
+                        opponent_data=opponent_data,
+                        war=war,
+                    )
                 self.load_member_defense(
                     member=current_member,
                     member_th_level=member_th,
@@ -206,6 +207,8 @@ class War_Updater(Updater):
     def update_war(self, war, data):
         clan_data = self.get_clan_data(data)
         opponent_data = self.get_opponent_data(data)
+        war.clan_stars = clan_data["stars"]
+        war.enemy_stars = opponent_data["stars"]
         war.clan_percentage = clan_data["destructionPercentage"]
         war.enemy_percentage = opponent_data["destructionPercentage"]
         db.session.commit()
