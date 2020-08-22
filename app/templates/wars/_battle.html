@@ -4,7 +4,13 @@
             <h5 class="card-title">
                 <table class="table table-sm">
                     <tbody>
+                        {% if battle.stars == 0 and battle.mode.mode == "Attack" %}
+                        <tr class="table-danger">
+                            {% elif battle.stars == 3 and battle.mode.mode == "Attack" %}
+                        <tr class="table-success">
+                            {% else %}
                         <tr>
+                            {% endif %}
                             <td>{{ battle.member.name}}</td>
                             <td>vs</td>
                             <td>{{ battle.enemy_name}}</td>
