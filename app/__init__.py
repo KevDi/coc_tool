@@ -19,13 +19,13 @@ bootstrap = Bootstrap()
 
 
 def create_app(config_class=Config):
-    if config_class.PRODUCTION:
-        app = Flask(__name__, static_url_path="/coc")
-    else:
-        app = Flask(__name__)
+    app = Flask(__name__)
 
     app.config.from_object(config_class)
-    cfg = app.config
+
+    if app.env == "production":
+        app.static_url_path = "/coc"
+
     db.init_app(app)
 
     migrate.init_app(app, db)
