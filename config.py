@@ -17,6 +17,7 @@ class Config(object):
     MAIL_USERNAME = os.environ.get("MAIL_USERNAME")
     MAIL_PASSWORD = os.environ.get("MAIL_PASSWORD")
     ADMINS = ["kevin@mjkd.de"]
+    PRODUCTION = os.environ.get("FLASK_ENV") == "production"
 
 
 class COC_Config(Config):
