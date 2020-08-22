@@ -34,7 +34,13 @@ class War_Updater(Updater):
             self.is_victory(clan_data, opponent_data) if self.war_ended(data) else None
         )
         war = War(
-            enemy=opponent_data["tag"],
+            size=data["teamSize"],
+            clan_stars=clan_data["stars"],
+            clan_percentage=clan_data["destructionPercentage"],
+            enemy=opponent_data["name"],
+            enemy_tag=opponent_data["tag"],
+            enemy_stars=opponent_data["stars"],
+            enemy_percentage=opponent_data["destructionPercentage"],
             start_time=start_time,
             end_time=end_time,
             victory=victory,
@@ -87,25 +93,31 @@ class War_Updater(Updater):
         opponent_data = self.get_opponent_data(data)
         for member in clan_data["members"]:
             current_member = Member.query.filter_by(id=member["tag"]).first()
-            if current_member and "attacks" in member:
-                attack_data = member["attacks"]
+            if current_member:
                 member_th = member["townhallLevel"]
-                self.load_member_attack(
-                    member=current_member,
-                    member_th_level=member_th,
-                    attack_data=attack_data,
-                    opponent_data=opponent_data,
-                    war=war,
-                )
+                position = member["mapPosition"]
+                if "attacks" in member:
+                    attack_data = member["attacks"]
+                    self.load_member_attack(
+                        member=current_member,
+                        member_th_level=member_th,
+                        member_position=position,
+                        attack_data=attack_data,
+                        opponent_data=opponent_data,
+                        war=war,
+                    )
                 self.load_member_defense(
                     member=current_member,
                     member_th_level=member_th,
+                    member_position=position,
                     opponent_data=opponent_data,
                     war=war,
                 )
         db.session.commit()
 
-    def load_member_defense(self, member, member_th_level, opponent_data, war):
+    def load_member_defense(
+        self, member, member_th_level, member_position, opponent_data, war
+    ):
         self.app.logger.info("Store Defenses for Member {}".format(member.name))
         defenses = []
         for opponent in opponent_data["members"]:
@@ -113,6 +125,8 @@ class War_Updater(Updater):
                 for attack in opponent["attacks"]:
                     if attack["defenderTag"] == member.id:
                         attack["th_level"] = opponent["townhallLevel"]
+                        attack["name"] = opponent["name"]
+                        attack["position"] = opponent["mapPosition"]
                         defenses.append(attack)
         mode = self.load_or_create_mode("Defense")
         for defense in defenses:
@@ -122,9 +136,12 @@ class War_Updater(Updater):
             if not battle:
                 battle = Battle(
                     enemy_tag=defense["attackerTag"],
+                    enemy_name=defense["name"],
                     enemy_th_level=defense["th_level"],
+                    enemy_position=defense["position"],
                     member=member,
                     member_th_level=member_th_level,
+                    member_position=member_position,
                     stars=defense["stars"],
                     percentage=defense["destructionPercentage"],
                     war=war,
@@ -134,7 +151,7 @@ class War_Updater(Updater):
                 db.session.add(battle)
 
     def load_member_attack(
-        self, member, member_th_level, attack_data, opponent_data, war
+        self, member, member_th_level, member_position, attack_data, opponent_data, war
     ):
         self.app.logger.info("Load Attacks for Member {}".format(member.name))
         for attack in attack_data:
@@ -150,8 +167,11 @@ class War_Updater(Updater):
             if not battle:
                 battle = Battle(
                     enemy_tag=attack["defenderTag"],
+                    enemy_name=opponent["name"],
                     enemy_th_level=opponent["townhallLevel"],
+                    enemy_position=opponent["mapPosition"],
                     member_th_level=member_th_level,
+                    member_position=member_position,
                     stars=attack["stars"],
                     percentage=attack["destructionPercentage"],
                     mode=mode,
@@ -184,6 +204,15 @@ class War_Updater(Updater):
         opponent_data = self.get_opponent_data(data)
         war.victory = self.is_victory(clan_data, opponent_data)
 
+    def update_war(self, war, data):
+        clan_data = self.get_clan_data(data)
+        opponent_data = self.get_opponent_data(data)
+        war.clan_stars = clan_data["stars"]
+        war.enemy_stars = opponent_data["stars"]
+        war.clan_percentage = clan_data["destructionPercentage"]
+        war.enemy_percentage = opponent_data["destructionPercentage"]
+        db.session.commit()
+
     def update(self):
         response = self.send_request(self.war_uri)
         if response.status_code != 200:
@@ -198,6 +227,7 @@ class War_Updater(Updater):
             self.store_war_battles(war, data)
         elif (self.war_running or self.war_ended) and self.war_in_db(data):
             war = self.load_war(data)
+            self.update_war(war, data)
             if self.war_ended(data):
                 self.update_victory(war, data)
                 db.session.commit()

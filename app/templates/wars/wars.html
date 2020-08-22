@@ -3,30 +3,53 @@
 {% block content %}
 
 {% for war in wars %}
-<div class="row">
-    <div class="col">
-        {% if war.victory == None %}
-        <div class="card bg-light mb-3">
-            {% elif war.victory == True %}
-            <div class="card text-white bg-success mb-3">
-                {% else %}
-                <div class="card text-white bg-danger mb-3">
-                    {% endif %}
-                    <div class="card-header">{{war.start_time}} - {{war.end_time}}</div>
-                    <div class="card-body">
-                        <h5 class="card-title">
-                            {%if war.victory == None %}
-                            <a href="#" class="text-dark">
-                                {% else %}
-                                <a href="#" class="text-light">
-                                    {% endif %}
-                                    War against {{war.enemy}}
-                                </a>
-                        </h5>
+<ul class="list-group">
+
+    {% if war.victory == None %}
+    <a class="list-group-item list-group-item-action list-group-item-primary war-summery"
+        href="{{ url_for('wars.war', war_id=war.id) }}">
+        {% elif war.victory == True %}
+        <a class="list-group-item list-group-item-action list-group-item-success war-summery"
+            href="{{ url_for('wars.war', war_id=war.id) }}">
+            {% else %}
+            <a class="list-group-item list-group-item-action list-group-item-danger war-summery"
+                href="{{ url_for('wars.war', war_id=war.id) }}">
+                {% endif %}
+                <div class="row justify-content-md-center">
+                    <h2 class="col-6 text-right" style="margin-bottom: 0;">Sackratten</h2>
+                    <h2 class="col-6" style="margin-bottom: 0;">{{ war.enemy }}</h2>
+                </div>
+                <div class="row justify-content-md-center">
+                    <div class="col-6 text-right">
+                        <h2 style="margin-top:0">
+                            <small><span style=" color:#444">
+                                    <i class="far fa-star"></i>
+                                    {{ war.clan_stars }}
+                                </span></small>
+                        </h2>
+                    </div>
+                    <div class="col-6">
+                        <h2 style="margin-top:0">
+                            <small><span style=" color:#444">
+                                    {{ war.enemy_stars }}
+                                    <i class="far fa-star"></i>
+                                </span></small>
+                        </h2>
                     </div>
                 </div>
-            </div>
-        </div>
-        {% endfor %}
+                <div class="row">
+                    <div class="col-3 text-left">
+                        <small>{{ war.start_time }}</small>
+                    </div>
+                    <div class="col-6 text-center">
+                        <small>Krieg</small>
+                    </div>
+                    <div class="col-3 text-right">
+                        <small>{{ war.size }} vs {{ war.size }}</small>
+                    </div>
+                </div>
+            </a>
+            {% endfor %}
+</ul>
 
-        {% endblock %}
+{% endblock %}

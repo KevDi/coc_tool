@@ -93,9 +93,15 @@ class Member(db.Model):
 
 class War(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    size = db.Column(db.Integer)
     enemy = db.Column(db.String(64))
+    enemy_tag = db.Column(db.String(12))
     start_time = db.Column(db.DateTime, index=True)
     end_time = db.Column(db.DateTime, index=True)
+    clan_stars = db.Column(db.Integer)
+    clan_percentage = db.Column(db.Float)
+    enemy_stars = db.Column(db.Integer)
+    enemy_percentage = db.Column(db.Float)
     victory = db.Column(db.Boolean, index=True)
     enemy_clan_level = db.Column(db.Integer)
     members = db.relationship("Member", secondary=members_in_war, backref="wars")
@@ -117,9 +123,12 @@ class Mode(db.Model):
 class Battle(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     enemy_tag = db.Column(db.String(12), nullable=False)
+    enemy_name = db.Column(db.String(64), nullable=False)
     enemy_th_level = db.Column(db.Integer, nullable=False)
+    enemy_position = db.Column(db.Integer, nullable=False)
     member_id = db.Column(db.String(12), db.ForeignKey("member.id"), nullable=False)
     member_th_level = db.Column(db.Integer, nullable=False)
+    member_position = db.Column(db.Integer, nullable=False)
     mode_id = db.Column(db.Integer, db.ForeignKey("mode.id"), nullable=False)
     stars = db.Column(db.Integer, nullable=False)
     percentage = db.Column(db.Float, nullable=False)

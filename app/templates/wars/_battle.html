@@ -1,0 +1,44 @@
+<div class="col-sm-6 mb-3">
+    <div class="card bg-light">
+        <div class="card-header">
+            <h5 class="card-title">
+                <table class="table table-sm">
+                    <tbody>
+                        {% if battle.stars == 0 and battle.mode.mode == "Attack" %}
+                        <tr class="table-danger">
+                            {% elif battle.stars == 3 and battle.mode.mode == "Attack" %}
+                        <tr class="table-success">
+                            {% else %}
+                        <tr>
+                            {% endif %}
+                            <td>{{ battle.member.name}}</td>
+                            <td>vs</td>
+                            <td>{{ battle.enemy_name}}</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge badge-secondary"
+                                    style="font-size: 10px; vertical-align: middle;">Pos:
+                                    {{ battle.member_position }}</span>
+                                <span class="badge badge-primary" style="font-size: 10px; vertical-align: middle;">TH:
+                                    {{ battle.member_th_level}}</span></td>
+                            <td></td>
+                            <td><span class="badge badge-secondary"
+                                    style="font-size: 10px; vertical-align: middle;">Pos:
+                                    {{ battle.enemy_position }}</span>
+                                <span class="badge badge-primary" style="font-size: 10px; vertical-align: middle;">TH:
+                                    {{ battle.enemy_th_level }}</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </h5>
+            <h6 class="card-subtitle mb-2 text-muted">
+                {% for i in range(battle.stars) %}
+                <i class="far fa-star"></i>
+                {% endfor %}
+                {% for i in range(3-battle.stars) %}
+                <i class="fas fa-star"></i>
+                {% endfor %}
+                {{ battle.percentage}}</h6>
+        </div>
+    </div>
+</div>
