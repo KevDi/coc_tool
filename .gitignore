@@ -7,6 +7,7 @@ instance/*
 !instance/.gitignore
 .webassets-cache
 uwsgi.ini
+.flask_env
 *.pid
 
 ### Flask.Python Stack ###
