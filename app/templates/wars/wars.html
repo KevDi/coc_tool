@@ -6,7 +6,7 @@
 <ul class="list-group">
 
     {% if war.victory == None %}
-    <a class="list-group-item list-group-item-action list-group-item-primary war-summery"
+    <a class="list-group-item list-group-item-action list-group-item-secondary war-summery"
         href="{{ url_for('wars.war', war_id=war.id) }}">
         {% elif war.victory == True %}
         <a class="list-group-item list-group-item-action list-group-item-success war-summery"
