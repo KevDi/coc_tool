@@ -66,9 +66,23 @@ def war(war_id):
             for defense in war.battles
             if defense.mode.mode == "Defense" and defense.member == member
         ]
+
+        position = war.size + 1
+        if attacks:
+            position = attacks[0].member_position
+        elif defense:
+            position = defense[0].member_position
+
         user_battles.append(
-            {"member": member.name, "attacks": attacks, "defenses": defense}
+            {
+                "position": position,
+                "member": member.name,
+                "attacks": attacks,
+                "defenses": defense,
+            }
         )
+
+    user_battles = sorted(user_battles, key=lambda k: k["position"])
 
     return render_template(
         "wars/war.html",
