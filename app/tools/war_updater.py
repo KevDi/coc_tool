@@ -202,8 +202,10 @@ class War_Updater(Updater):
             res = next(
                 war for war in all_wars if war.start_time.date() == start_time.date()
             )
-        else:
+        elif len(all_wars) == 1:
             res = all_wars[0]
+        else:
+            res = None
         return res
 
     def update_victory(self, war, data):
