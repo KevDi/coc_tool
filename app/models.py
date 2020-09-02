@@ -106,6 +106,9 @@ class ClanWarLeague(db.Model):
         "Member", secondary=members_in_clan_war, backref="clan_wars"
     )
 
+    def __repr__(self):
+        return "<CWL Season: {}>".format(self.season)
+
 
 class War(db.Model):
     id = db.Column(db.Integer, primary_key=True)

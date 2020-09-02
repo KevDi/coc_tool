@@ -213,18 +213,13 @@ class War_Updater(Updater):
         war.enemy_percentage = opponent_data["destructionPercentage"]
         db.session.commit()
 
-    def update(self):
-        response = self.send_request(self.war_uri)
-        if response.status_code != 200:
-            self.app.logger.info("Error {}".format(response.status_code))
-            self.app.logger.info("Message {}".format(response.json()))
-            return
-        data = response.json()
+    def process_war(self, data):
         if self.war_in_preperation(data) and not self.war_in_db(data):
-            self.store_war(data)
+            return self.store_war(data)
         elif (self.war_running or self.war_ended) and not self.war_in_db(data):
             war = self.store_war(data)
             self.store_war_battles(war, data)
+            return war
         elif (self.war_running or self.war_ended) and self.war_in_db(data):
             war = self.load_war(data)
             self.update_war(war, data)
@@ -232,3 +227,13 @@ class War_Updater(Updater):
                 self.update_victory(war, data)
                 db.session.commit()
             self.store_war_battles(war, data)
+            return war
+
+    def update(self):
+        response = self.send_request(self.war_uri)
+        if response.status_code != 200:
+            self.app.logger.info("Error {}".format(response.status_code))
+            self.app.logger.info("Message {}".format(response.json()))
+            return
+        data = response.json()
+        self.process_war(data)
