@@ -31,6 +31,12 @@ members_in_war = db.Table(
     db.Column("war_id", db.Integer, db.ForeignKey("war.id")),
 )
 
+members_in_clan_war = db.Table(
+    "member_in_clan_war",
+    db.Column("member_id", db.String(12), db.ForeignKey("member.id")),
+    db.Column("clan_war_id", db.Integer, db.ForeignKey("clan_war_league.id")),
+)
+
 
 class Member(db.Model):
     id = db.Column(db.String(12), primary_key=True)
@@ -96,6 +102,9 @@ class ClanWarLeague(db.Model):
     tag = db.Column(db.String(64))
     season = db.Column(db.String(12))
     wars = db.relationship("War", backref="clan_war_league")
+    members = db.relationship(
+        "Member", secondary=members_in_clan_war, backref="clan_wars"
+    )
 
 
 class War(db.Model):
