@@ -73,6 +73,7 @@ class Clan_War_Updater(Updater):
                 data = response.json()
                 if self.contains_clan_round(data):
                     self.load_war(data, cwl)
+                    break
 
     def update(self):
         response = self.send_request(self.clan_war_uri)
