@@ -195,9 +195,18 @@ class War_Updater(Updater):
         ).first()
 
     def load_war(self, data):
-        start_time = datetime.strptime(data["startTime"], self.date_format)
-        end_time = datetime.strptime(data["endTime"], self.date_format)
-        return War.query.filter_by(start_time=start_time, end_time=end_time).first()
+        opponents_data = self.get_opponent_data(data)
+        all_wars = War.query.filter_by(enemy_tag=opponents_data["tag"]).all()
+        if len(all_wars) > 1:
+            start_time = datetime.strptime(data["startTime"], self.date_format)
+            res = next(
+                war for war in all_wars if war.start_time.date() == start_time.date()
+            )
+        elif len(all_wars) == 1:
+            res = all_wars[0]
+        else:
+            res = None
+        return res
 
     def update_victory(self, war, data):
         clan_data = self.get_clan_data(data)
