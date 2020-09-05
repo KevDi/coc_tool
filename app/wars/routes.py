@@ -1,7 +1,7 @@
 from flask import render_template
 from flask_login.utils import login_required
 from app.wars import bp
-from app.models import War
+from app.models import War, ClanWarLeague
 
 
 @bp.route("/wars")
@@ -91,3 +91,10 @@ def war(war_id):
         opponent_war_result=opponent_war_result,
         user_battles=user_battles,
     )
+
+
+@bp.route("/clan-wars")
+@login_required
+def clan_wars():
+    cwl = ClanWarLeague.query.all()
+    return render_template("wars/clan_wars.html", title="Clan War Leagues", cwl=cwl)

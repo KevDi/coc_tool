@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<ul class="list-group">
+    {% for season in cwl %}
+    <a class="list-group-item list-group-item-action list-group-item-secondary war-summery" href="#">
+        <div class="row justify-content-md-center">
+            <h2 class="col text-center" style="margin-bottom: 0;">Clan War Leage Season:</h2>
+        </div>
+        <div class="row justify-content-md-center">
+            <h2 class="col text-center" style="margin-bottom: 0;">{{season.season}}</h2>
+        </div>
+    </a>
+    {% endfor %}
+
+
+</ul>
+
+{% endblock %}
