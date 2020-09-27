@@ -38,11 +38,23 @@ class Clan_War_Updater(Updater):
                 )
                 cwl.members.append(current_member)
 
+    def load_clan_war_league(self, cwl, data):
+        response = self.send_request("clans/{}".format(self.clan_tag))
+        if response.status_code != 200:
+            self.app.logger.info("Error {}".format(response.status_code))
+            self.app.logger.info("Message {}".format(response.json()))
+            return
+        data = response.json()
+        if "warLeague" in data and "name" in data["warLeague"]:
+            cwl.tag = data["warLeague"]["name"]
+            self.app.logger.info("Clan War League: {}".format(cwl.tag))
+
     def store_clan_war(self, data):
         season = data["season"]
         cwl = ClanWarLeague(season=season)
         self.app.logger.info("Created CWL {}".format(season))
         self.load_members(cwl, data)
+        self.load_clan_war_league(cwl, data)
         db.session.add(cwl)
         db.session.commit()
         return cwl
