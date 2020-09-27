@@ -2,8 +2,10 @@
 
 {% block content %}
 
-{% for war in wars %}
+
 <ul class="list-group">
+    {% for war in wars %}
+    {% if not war.clan_war_league %}
 
     {% if war.victory == None %}
     <a class="list-group-item list-group-item-action list-group-item-secondary war-summery"
@@ -49,6 +51,7 @@
                     </div>
                 </div>
             </a>
+            {% endif %}
             {% endfor %}
 </ul>
 

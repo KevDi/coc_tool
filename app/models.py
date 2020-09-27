@@ -31,6 +31,12 @@ members_in_war = db.Table(
     db.Column("war_id", db.Integer, db.ForeignKey("war.id")),
 )
 
+members_in_clan_war = db.Table(
+    "member_in_clan_war",
+    db.Column("member_id", db.String(12), db.ForeignKey("member.id")),
+    db.Column("clan_war_id", db.Integer, db.ForeignKey("clan_war_league.id")),
+)
+
 
 class Member(db.Model):
     id = db.Column(db.String(12), primary_key=True)
@@ -91,6 +97,19 @@ class Member(db.Model):
         self.royal_level = other.royal_level
 
 
+class ClanWarLeague(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    tag = db.Column(db.String(64))
+    season = db.Column(db.String(12))
+    wars = db.relationship("War", backref="clan_war_league")
+    members = db.relationship(
+        "Member", secondary=members_in_clan_war, backref="clan_wars"
+    )
+
+    def __repr__(self):
+        return "<CWL Season: {}>".format(self.season)
+
+
 class War(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     size = db.Column(db.Integer)
@@ -106,6 +125,7 @@ class War(db.Model):
     enemy_clan_level = db.Column(db.Integer)
     members = db.relationship("Member", secondary=members_in_war, backref="wars")
     battles = db.relationship("Battle", backref="war")
+    clan_war_league_id = db.Column(db.Integer, db.ForeignKey("clan_war_league.id"))
 
     def __repr__(self):
         return "<War against {} Victory: {}>".format(self.enemy, self.victory)

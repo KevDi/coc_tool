@@ -1,5 +1,5 @@
 from app import create_app, db, cli
-from app.models import User, Member, War, Battle, Mode
+from app.models import User, Member, War, Battle, Mode, ClanWarLeague
 
 app = create_app()
 cli.register(app)
@@ -11,6 +11,7 @@ def make_shell_context():
         "db": db,
         "User": User,
         "Member": Member,
+        "Cwl": ClanWarLeague,
         "War": War,
         "Battle": Battle,
         "Mode": Mode,

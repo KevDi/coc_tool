@@ -1,2 +1,2 @@
 FLASK_APP=coc_tool.py
-FLASK_ENV=production
+FLASK_ENV=development

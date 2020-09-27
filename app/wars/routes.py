@@ -1,7 +1,7 @@
 from flask import render_template
 from flask_login.utils import login_required
 from app.wars import bp
-from app.models import War
+from app.models import War, ClanWarLeague
 
 
 @bp.route("/wars")
@@ -91,3 +91,47 @@ def war(war_id):
         opponent_war_result=opponent_war_result,
         user_battles=user_battles,
     )
+
+
+@bp.route("/clan-wars")
+@login_required
+def clan_wars():
+    cwl = ClanWarLeague.query.all()
+    return render_template("wars/clan_wars.html", title="Clan War Leagues", cwl=cwl)
+
+
+@bp.route("/clan_wars/<cwl_id>")
+@login_required
+def clan_war(cwl_id):
+    cwl = ClanWarLeague.query.filter_by(id=cwl_id).first_or_404()
+
+    cwl_data = []
+    for member in cwl.members:
+        member_dict = {
+            member.id: member.id,
+            "name": member.name,
+            "th": member.th_level,
+            "wars": [None] * 7,
+        }
+        cwl_data.append(member_dict)
+
+    cwl_data = sorted(cwl_data, key=lambda k: k["th"], reverse=True)
+
+    for i, war in enumerate(cwl.wars):
+        attacks = [attack for attack in war.battles if attack.mode.mode == "Attack"]
+        for attack in attacks:
+            member_dict = [data for data in cwl_data if attack.member.id in data]
+            if member_dict:
+                member_dict[0]["wars"][i] = attack
+
+    for member_data in cwl_data:
+        three_star_attacks = sum(
+            1
+            for attack in member_data["wars"]
+            if attack is not None and attack.stars == 3
+        )
+        battles_count = sum(1 for attack in member_data["wars"] if attack is not None)
+        member_data["applications"] = battles_count
+        member_data["three_stars"] = three_star_attacks
+
+    return render_template("wars/clan_war.html", title="Clan War League", cwl=cwl_data)

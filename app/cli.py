@@ -1,3 +1,4 @@
+from app.tools.clan_war_updater import Clan_War_Updater
 from app.tools.member_updater import Member_Updater
 from app.tools.war_updater import War_Updater
 from app.models import Mode
@@ -7,25 +8,29 @@ from config import COC_Config
 
 def register(app):
     @app.cli.group()
-    def member():
-        """ Updating Members."""
+    def update():
+        """ Updating Clan Members, War or Clan War Informations """
         pass
 
-    @member.command()
-    def update():
+    @update.command()
+    def member():
+        """ Updating Clan Members."""
         config = COC_Config()
         updater = Member_Updater(config, app)
         updater.update()
 
-    @app.cli.group()
+    @update.command()
     def war():
-        """ Updating Wars."""
-        pass
-
-    @war.command()
-    def update():
+        """ Updating War Information """
         config = COC_Config()
         updater = War_Updater(config, app)
+        updater.update()
+
+    @update.command()
+    def cwl():
+        """ Updating Clan War League."""
+        config = COC_Config()
+        updater = Clan_War_Updater(config, app)
         updater.update()
 
     @app.cli.group()
