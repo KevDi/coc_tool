@@ -13,6 +13,9 @@ class War_Updater(Updater):
     def get_war_status(self, data):
         return data["state"]
 
+    def not_in_war(self, data):
+        return data["state"] == "notInWar"
+
     def war_in_preperation(self, data):
         return data["state"] == "preperation"
 
@@ -223,6 +226,9 @@ class War_Updater(Updater):
         db.session.commit()
 
     def process_war(self, data):
+        if self.not_in_war(data):
+            self.app.logger.info("Not in War!")
+            return
         if self.war_in_preperation(data) and not self.war_in_db(data):
             return self.store_war(data)
         elif (self.war_running or self.war_ended) and not self.war_in_db(data):
